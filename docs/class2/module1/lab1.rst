@@ -1,68 +1,17 @@
-Lab 1.1: Setup a device template
---------------------------------
+Lab 1.1: General Views and Configuration Applications
+-----------------------------------------------------
+Connect as **paula** with the password of **paula**
 
-The first thing to setup to be able to deploy ``Service Scaling Group`` (SSG) is
-to setup a ``device template``
+The screen lists all of your applications and current summary data about health, traffic performance and security. Use this screen to create, delete, deploy and oversee all of your applications.
 
-A device template contains all the configuration items that should be pushed
-on a newly provisioned F5 Virtual edition:
+Summary Bar provides summary information about your application's health, traffic and security status.
+Click the elements in this area to filter or sort the application list.
 
-* Hostname (prefix/Serial Number/suffix)
-* Default route (if you don't use DHCP)
-* Management port (may vary if you use VMWare - 443 - or AWS - 8443 -)
-* License
-* Modules to provision
-* VLANs
-* Self-IPs
-* User accounts
+- Health: Lists the number of applications at each health status.
+- Traffic Performance: Lists the top 5 applications for each performance data indicator.
+- Security: Lists the number of applications that have an active security alert.
 
-In this lab, we will create a device template that will be used for our ``SSG``
-
-License Pool Setup
-******************
-
-Your BIG-IQ should already have a license pool setup.
-
-Connect to your BIG-IQ (as *admin*)and go to : *Devices* > *License Management* > *Licenses*
-
-Here you should see a license pool called ``byol-pool``
-
-.. image:: ../pictures/module1/img_module1_lab1_9.png
-  :align: center
-  :scale: 50%
-
-|
-
-IP Pools Setup
-**************
-
-When you provision dynamically new F5 virtual edition, you need to be able to
-automatically assign Self IPs to this instance. To do that, we will rely on
-the ``IP Pool`` feature of ``BIG-IQ``
-
-For our lab, we will need two IP pools:
-
-* One for the network between Tier1 (``Service Scaler``) and Tier2 (``SSG``)
-* One for the servers network
-
-Go to *Devices* > *IP POOLS*, you should see two already defined ``IP Pool``:
-
-* external
-* internal
-
-.. image:: ../pictures/module1/img_module1_lab1_10.png
-  :align: center
-  :scale: 50%
-
-|
-
-Device Template Setup
-*********************
-
-To create your Device Template, go to *Devices* > *Device Templates* and click
-on *Create*
-
-you should see this:
+Use one of the screen's filter and sort settings to isolate an application of interest, based on summary data or active alerts.
 
 .. image:: ../pictures/module1/img_module1_lab1_1.png
   :align: center
@@ -70,12 +19,7 @@ you should see this:
 
 |
 
-Click on the button *Add/remove* to select the configuration items you want to
-enforce when deploying a new F5 virtual edition in your ``SSG``
-
-Here, for the *Provider Type*, select *VMWare*. It will automatically select
-all the required information related to a VMWare environment (in regards to Using
-``Service Scaling Group``)
+Filter on **Not Protected** Applications:
 
 .. image:: ../pictures/module1/img_module1_lab1_2.png
   :align: center
@@ -83,9 +27,10 @@ all the required information related to a VMWare environment (in regards to Usin
 
 |
 
-Click *OK*. You'll see new tabs under the *Objects* column.
+Select an application name to redirect you to a more detailed dashboard.
 
-In the Name field, specify your ``Device Template`` name: *SSGSetupClass2*
+This screen displays the current health, traffic performance, security, and configuration details for an application.
+Use this screen to detect application trends, to identify issues that can affect performance, and to adjust application configuration settings.
 
 .. image:: ../pictures/module1/img_module1_lab1_3.png
   :align: center
@@ -93,49 +38,59 @@ In the Name field, specify your ``Device Template`` name: *SSGSetupClass2*
 
 |
 
-Click on the **configuration** tab , DO NOT CLICK SAVE YET or you'll lose the
-unconfigured tabs
+The summary bar at the top of the screen provides information about the application's health, traffic performance, security status, and alerts.
+The Health area indicates the application's health status.
+
+- The Traffic Performance area provides current information about the application's Longest Response Time, Top HTTP Transactions, and Top Connections.
+- The Security area provides current information about the Web Application Security policy's protection status, the amount of malicious traffic, and the active, critical security findings.
+- The alerts areas list the application's alerts. You can click See All to see a full list of the application's alerts.
+- The Alert History area lists the application's five most recent alerts.
+- The Active Alerts area lists the application's ongoing and most severe alerts.
+
+Click the icon to view, or edit, the application health alert rules.
 
 .. image:: ../pictures/module1/img_module1_lab1_4.png
   :align: center
   :scale: 50%
 
-|
-
-Setup the configuration tab like this:
-
-* Hostname Components:
-
-  * Default Route: LEAVE EMPTY
-  * Management port: 443
-  * Check *Text (prefix)* and put: SSGClass2-
-  * Check *Serial Number*
-  * Check *Text (suffix)* and put: .f5demo.local
-
+The application configuration map directly below the summary bar provides information about your application's properties, client types,
+network and device configuration, F5 application services, and server configuration. You can click the icons to display detailed information in the ANALYTICS and CONFIGURATION areas.
 
 .. image:: ../pictures/module1/img_module1_lab1_5.png
   :align: center
+  :scale: 50%
 
 |
 
-Click on the *License* tab and setup the following:
+**Analytics Tab**
 
-* License Type : Select *Purchased Pool*
-* License Name: Select *byol-pool*
+The ANALYTICS area displays the application's traffic data trends and events and alerts, within a selected time period.
 
-.. image:: ../pictures/module1/img_module1_lab1_12.png
+**Tip:** You can use the arrow at the bottom right of application configuration map and summary bar to expand the Analytics area on the screen.
+
+.. image:: ../pictures/module1/img_module1_lab1_6.png
   :align: center
   :scale: 50%
 
-
 |
 
-Click on the *Provisioning* tab,
+You can use the time settings above the chart to focus the data to a specific time period. You can also control the data refresh period and events in the charts.
 
-* Select the module *Local Traffic Manager (LTM)* and set it to *Nominal*
-* Select the module *Application Visibility and Reporting* and set it to
-  *Minimum*
-* Select the module *Application Security (ASM)* and set it to *Nominal*
+.. note:: To view events and alerts in charts, ensure that the Events button is set to ON.
+
+The charts display interactive information about the application's traffic connections, latency times, and response outcomes.
+Click the menu to the left to navigate among the charts. Take the time to navigate through the different graphs.
+
+The events and alerts are displayed as numbered icons within the charts. You can click these icons to display an information table below the chart.
+You can click rows within the table to view detailed information. Click the buttons below the chart area to filter out displayed events and alerts by Category or Log Level.
+
+Click the arrow tab to the right of the chart to expand the dimensions area.
+To filter data in charts and dimensions, expand the dimensions to select specific objects listed.
+Note: Certain dimensions list aggregated data. Click Enhanced Analytics to enable object data for these dimensions.
+
+Take the time to navigate in all the different charts.
+
+.. note:: When using the filters, do not enter the first ``/`` in your query.
 
 .. image:: ../pictures/module1/img_module1_lab1_7.png
   :align: center
@@ -143,99 +98,12 @@ Click on the *Provisioning* tab,
 
 |
 
-Click on the *DNS & NTP* tab and setup the following:
+**Configuration Tab**
 
-* Lookup Servers: 8.8.4.4
-* NTP Server: pool.ntp.org
-* Timezone: America/Los_Angeles
+Click CONFIGURATION to view and evaluate the settings for application properties. The Application owner can easily update the BIG-IP configuration (Virtual Server, Node, etc..).
+
+Take the time to navigate in all the different menu.
 
 .. image:: ../pictures/module1/img_module1_lab1_8.png
   :align: center
   :scale: 50%
-
-|
-
-Click on the *VLANs* tab. You should see a vlan defined by default: *external*.
-
-.. note::
-
-  When you create/update a VLAN, you'll see the interface 1.1 being pre-populated.
-  In fact, it is showed as an example. You need to type
-  the interface yourself -ie 1.1 / 1.2 / ...
-
-Click on the *Add* button:
-
-* Name: internal
-* Tag: EMPTY
-* Interface: 1.2
-
-Click on the *Save and Close* button. Click on the external vlan and assign the
-interface 1.1 to it.
-
-
-
-.. image:: ../pictures/module1/img_module1_lab1_13.png
-  :align: center
-  :scale: 50%
-
-|
-
-Click on the *Self IP's* tab. You should see a Self IP defined called *external*.
-Click on the *Add* button:
-
-* Name: internal
-* IP Address: IP Pool > Select *internal*
-* VLAN: internal
-* Port lockdown: Allow None
-
-.. image:: ../pictures/module1/img_module1_lab1_14.png
-  :align: center
-  :scale: 50%
-
-|
-
-Click on the *Save and Close* button. Click on the *external* self ip to set it up
-
-* Name: external
-* IP Address: IP Pool > Select *external*
-* VLAN: external
-* Port lockdown: Allow None
-
-.. image:: ../pictures/module1/img_module1_lab1_15.png
-  :align: center
-  :scale: 50%
-
-|
-
-.. note::
-
-  The ``external`` self IP is important because this is the self IP we will use
-  to LB traffic between our tier1 (``Service Scaler``) and tier2 BIG-IPs (``SSG``).
-  You need to use it as is. if you don't use a ``external`` self IP on your
-  tier2 device, ``BIG-IQ`` won't know which interface to use
-
-Click on the *Root Account* tab. Specify a new password for the root account:
-*purple*
-
-.. image:: ../pictures/module1/img_module1_lab1_16.png
-  :align: center
-
-|
-
-Click on the *User Accounts* tab. You will see the admin user. Click on the *Admin*
-user.
-
-* Role: select *Administrator*
-* Username: admin
-* Password: purple
-* Confirm Password: purple
-
-.. image:: ../pictures/module1/img_module1_lab1_11.png
-  :align: center
-  :scale: 50%
-
-|
-
-Click on the button *Save & Close*, Click on the button *Save & Close* again
-
-You should see your ``Device Template`` available now.
